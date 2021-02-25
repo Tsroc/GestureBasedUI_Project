@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<grammar xml:lang="en" root="movement"
+tag-format="semantics/1.0" version="1.0"
+xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="movement">
+    <one-of>
+      <item>
+        <ruleref uri="#up"/>
+      </item>
+      <item>
+        <ruleref uri="#down"/>
+      </item>
+      <item>
+        <ruleref uri="#left"/>
+      </item>
+      <item>
+        <ruleref uri="#right"/>
+      </item>
+      <item>
+        <ruleref uri="#home"/>
+      </item>
+      <item>
+        <ruleref uri="#wizard"/>
+      </item>
+      <item>
+        <ruleref uri="#cheese"/>
+      </item>
+      <item>
+        <ruleref uri="#cat"/>
+      </item>
+      <item>
+        <ruleref uri="#sleep"/>
+      </item>
+      <item>
+        <ruleref uri="#stop"/>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="up">
+    <one-of>
+      <item>up</item>
+    </one-of>
+  </rule>
+
+  <rule id="down">
+    <one-of>
+      <item>down</item>
+    </one-of>
+  </rule>
+
+  <rule id="left">
+    <one-of>
+      <item>left</item>
+    </one-of>
+  </rule>
+
+  <rule id="right">
+    <one-of>
+      <item>right</item>
+    </one-of>
+  </rule>
+
+  <rule id="home">
+    <one-of>
+      <item>go to home</item>
+    </one-of>
+  </rule>
+
+  <rule id="wizard">
+    <one-of>
+      <item>go to wizard</item>
+    </one-of>
+  </rule>
+
+  <rule id="cheese">
+    <one-of>
+      <item>go to cheese</item>
+    </one-of>
+  </rule>
+
+  <rule id="cat">
+    <one-of>
+      <item>attack cat</item>
+    </one-of>
+  </rule>
+
+  <rule id="sleep">
+    <one-of>
+      <item>cast sleep</item>
+    </one-of>
+  </rule>
+
+  <rule id="stop">
+    <one-of>
+      <item>stop</item>
+    </one-of>
+  </rule>
+  
+
+</grammar>

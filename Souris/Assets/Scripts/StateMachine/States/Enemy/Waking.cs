@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Waking : IState
 {
-    private float duration = 5.0f;
+    private float duration = 7.0f;
 
     private System.Action alertCallback;
 
@@ -17,7 +17,7 @@ public class Waking : IState
     public void Enter()
     {
         // Lower detection range.
-        Debug.Log("The cat is waking...");
+        Debug.Log("The cat is begining to wake...");
     }
 
     public void Execute()
@@ -34,7 +34,6 @@ public class Waking : IState
 
     public void Exit()
     {
-        Debug.Log("The cat has finished waking...");
     }
 
     private void BecomeAlert()

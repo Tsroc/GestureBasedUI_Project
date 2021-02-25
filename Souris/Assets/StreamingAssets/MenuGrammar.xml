@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<grammar xml:lang="en" root="mainmenu"
+tag-format="semantics/1.0" version="1.0"
+xmlns="http://www.w3.org/2001/06/grammar">
+
+  <rule id="mainmenu">
+    <one-of>
+      <item>
+        <ruleref uri="#play"/>
+      </item>
+      <item>
+        <ruleref uri="#quit"/>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="play">
+    <one-of>
+      <item>play</item>
+      <!--
+      <item>start</item>
+      <item>begin</item>
+      -->
+    </one-of>
+  </rule>
+
+  <rule id="quit">
+    <one-of>
+      <item>quit</item>
+      <!--
+      <item>end</item>
+      <item>exit</item>
+      -->
+    </one-of>
+  </rule>
+
+
+
+</grammar>

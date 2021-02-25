@@ -8,7 +8,7 @@ public class Alert : IState
     public void Enter()
     {
         // Increase detection range.
-        Debug.Log("The cat has become alert...");
+        Debug.Log("The cat has become alert.");
     }
 
     public void Execute()

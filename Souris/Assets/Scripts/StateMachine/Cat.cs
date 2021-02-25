@@ -8,6 +8,7 @@ public class Cat : MonoBehaviour
     private Animator anim;
     private CircleCollider2D collider;
     private Transform alertRadius;
+    private bool gameover = false;
 
     private float[] radius = {2.0f, 3.0f, 5.0f};
 
@@ -21,7 +22,8 @@ public class Cat : MonoBehaviour
 
     private void Update()
     {
-        this.stateMachine.ExecuteStateUpdate();
+        if(!gameover)
+            this.stateMachine.ExecuteStateUpdate();
     }
 
     public void Sleep()
@@ -30,7 +32,7 @@ public class Cat : MonoBehaviour
         // the player will react to what they see and should not get unexpected, non-visible changes.
         anim.SetInteger("state", 0);
         this.stateMachine.ChangeState(new Sleeping(this.Wake));
-        alertRadius.localScale = new Vector3(8.0f, 8.0f, 0.0f);
+        alertRadius.localScale = new Vector3(1.6f, 1.6f, 0.0f);
         collider.radius = radius[0];
     }
 
@@ -38,7 +40,7 @@ public class Cat : MonoBehaviour
     {
         anim.SetInteger("state", 1);
         this.stateMachine.ChangeState(new Waking(this.Alert));
-        alertRadius.localScale = new Vector3(12.0f, 12.0f, 0.0f);
+        alertRadius.localScale = new Vector3(2.3f, 2.3f, 0.0f);
         collider.radius = radius[1];
     }
 
@@ -47,13 +49,14 @@ public class Cat : MonoBehaviour
         anim.SetInteger("state", 2);
         this.stateMachine.ChangeState(new Alert());
         // Collider radius = 5; Player can no longer safely pass
-        alertRadius.localScale = new Vector3(20.0f, 20.0f, 0.0f);
+        alertRadius.localScale = new Vector3(4.0f, 4.0f, 0.0f);
         collider.radius = radius[2];
     }
 
     public void Attack()
     {
         // Game over
+        gameover = true;
         anim.SetInteger("state", 3);
         //this.stateMachine.ChangeState(new Attacking());
     }
@@ -61,6 +64,7 @@ public class Cat : MonoBehaviour
     public void Scared()
     {
         // Game over
+        gameover = true;
         anim.SetInteger("state", 4);
         //this.stateMachine.ChangeState(new Attacking());
     }

@@ -14,6 +14,7 @@ public class Wizard : MonoBehaviour
     public void CastSleep()
     {
         // The wizard puts the cat to sleep
+        Debug.Log("The wizard has put the cat to sleep.");
         cat.GetComponent<Cat>().Sleep();
 
     }

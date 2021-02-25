@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class Attacking : IState
 {
-    private float duration = 10.0f;
-
     public void Enter()
     {
-        Debug.Log("The cat is attacking...");
+        Debug.Log("The cat has found you!");
     }
 
     public void Execute()

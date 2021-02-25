@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     private StateMachine stateMachine = new StateMachine();
     private Animator anim;
+    [SerializeField] GameObject canvas;
 
-    private float movement = 0.05f;
+    [SerializeField] private float movement = 0.8f;
     private float vClamp = 4.5f;
     private float hClamp = 8.0f;
     private bool hasCheese = false;
     private int cheeseCount = 0;
-    private int evolveRequirement = 1;
+    [SerializeField] private int evolveRequirement = 1;
     private bool evolved = false;
+    private bool gameover = false;
 
     void Start()
     {
@@ -23,7 +26,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        this.stateMachine.ExecuteStateUpdate();
+        if(!gameover)
+            this.stateMachine.ExecuteStateUpdate();
     }
 
     private void Mobile()
@@ -41,22 +45,20 @@ public class Player : MonoBehaviour
     {
         if (collision.tag == "Enemy")
         {
-            Debug.Log("Trigger: Enemy.");
             InteractWithCat();
         }
         else if (collision.tag == "Wizard")
         {
-            Debug.Log("Trigger: Wizard.");
             InteractWithWizard();
         }
         else if (collision.tag == "PickUp")
         {
-            Debug.Log("Trigger: PickUp.");
+            Debug.Log("Looting the chsses.");
             InteractWithCheese();
         }
         else if (collision.tag == "Home")
         {
-            Debug.Log("Trigger: Home.");
+            Debug.Log("Depositing the cheese.");
             InteractWithHome();
         }
     }
@@ -102,12 +104,6 @@ public class Player : MonoBehaviour
                 evolved = true;
                 anim.SetInteger("state", 1);
         }
-        else
-        {
-            Incapacitated();
-            GameObject wizard = GameObject.FindGameObjectWithTag("Wizard");
-            wizard.GetComponent<Wizard>().CastSleep();
-        }
     }
 
     private void InteractWithCheese()
@@ -125,6 +121,7 @@ public class Player : MonoBehaviour
         if (evolved)
         {
             // You win
+            Gameover("You win!");
             Debug.Log("You killed the cat!");
             GameObject cat = GameObject.FindGameObjectWithTag("Enemy");
             cat.GetComponent<Cat>().Scared();
@@ -132,10 +129,23 @@ public class Player : MonoBehaviour
         else
         {
             // You lose
+            Gameover("You lose!");
             GameObject cat = GameObject.FindGameObjectWithTag("Enemy");
             cat.GetComponent<Cat>().Attack();
             Debug.Log("The cat found you!");
         }
+    }
+
+    private void Gameover(string status)
+    {
+        // Freeze the gamefeedbackText
+        gameover = true;
+        // Display canvas
+        Text[] text = canvas.GetComponentsInChildren<Text>();
+        text[0].text = status;
+        text[1].text = status;
+        canvas.SetActive(true);
+
     }
 
 }
