@@ -1,9 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<grammar xml:lang="en" root="movement"
+<grammar xml:lang="en" root="controls"
 tag-format="semantics/1.0" version="1.0"
 xmlns="http://www.w3.org/2001/06/grammar">
 
+
+  <rule id="controls">
+    <one-of>
+      <item>
+        <ruleref uri="#movement"/>
+      </item>
+      <item>
+        <ruleref uri="#set_path"/>
+      </item>
+      <item>
+        <ruleref uri="#action"/>
+      </item>
+      <item>
+        <ruleref uri="#wizard_interaction"/>
+      </item>
+      <item>
+        <ruleref uri="#cheese_interaction"/>
+      </item>
+    </one-of>
+  </rule>
+
+
+  <!-- Movement -->
   <rule id="movement">
     <one-of>
       <item>
@@ -18,20 +41,92 @@ xmlns="http://www.w3.org/2001/06/grammar">
       <item>
         <ruleref uri="#right"/>
       </item>
-      <item>
-        <ruleref uri="#home"/>
-      </item>
-      <item>
-        <ruleref uri="#wizard"/>
-      </item>
-      <item>
-        <ruleref uri="#cheese"/>
-      </item>
+    </one-of>
+  </rule>
+
+<!-- This needs fixed, similar to set_path methods-->
+  <rule id="up">
+    <one-of>
+      <item>up</item>
+      <item>go up</item>
+      <item>move up</item>
+    </one-of>
+    <tag>out="up"</tag>
+  </rule>
+
+  <rule id="down">
+    <one-of>
+      <item>down</item>
+      <item>go down</item>
+      <item>move down</item>
+    </one-of>
+    <tag>out="down"</tag>
+  </rule>
+
+  <rule id="left">
+    <one-of>
+      <item>left</item>
+      <item>go left</item>
+      <item>move left</item>
+    </one-of>
+    <tag>out="left"</tag>
+  </rule>
+
+  <rule id="right">
+    <one-of>
+      <item>right</item>
+      <item>go right</item>
+      <item>move right</item>
+    </one-of>
+    <tag>out="right"</tag>
+  </rule>
+
+  <!-- Set Path-->
+  <rule id="set_path">
+    <tag>out.action="path"</tag>
+    <one-of>
+      <item> go to </item>
+      <item> move to </item>
+      <item> path to </item>
+    </one-of>
+    <ruleref uri="#paths"/>
+    <tag>out=rules.latest();</tag>
+  </rule>
+
+  <rule id="paths">
+    <one-of>
+      <item><ruleref uri="#home"/></item>
+      <item><ruleref uri="#wizard"/></item>
+      <item><ruleref uri="#cheese"/></item>
+    </one-of>
+  </rule>
+
+  <rule id="home">
+    <one-of>
+      <item>home</item>
+    </one-of>
+    <tag>out="go to home"</tag>
+  </rule>
+
+  <rule id="wizard">
+    <one-of>
+      <item>wizard</item>
+    </one-of>
+    <tag>out="go to wizard"</tag>
+  </rule>
+
+  <rule id="cheese">
+    <one-of>
+      <item>cheese</item>
+    </one-of>
+    <tag>out="go to cheese"</tag>
+  </rule>
+
+  <!-- Action -->
+  <rule id="action">
+    <one-of>
       <item>
         <ruleref uri="#cat"/>
-      </item>
-      <item>
-        <ruleref uri="#sleep"/>
       </item>
       <item>
         <ruleref uri="#stop"/>
@@ -39,58 +134,12 @@ xmlns="http://www.w3.org/2001/06/grammar">
     </one-of>
   </rule>
 
-  <rule id="up">
-    <one-of>
-      <item>up</item>
-    </one-of>
-  </rule>
-
-  <rule id="down">
-    <one-of>
-      <item>down</item>
-    </one-of>
-  </rule>
-
-  <rule id="left">
-    <one-of>
-      <item>left</item>
-    </one-of>
-  </rule>
-
-  <rule id="right">
-    <one-of>
-      <item>right</item>
-    </one-of>
-  </rule>
-
-  <rule id="home">
-    <one-of>
-      <item>go to home</item>
-    </one-of>
-  </rule>
-
-  <rule id="wizard">
-    <one-of>
-      <item>go to wizard</item>
-    </one-of>
-  </rule>
-
-  <rule id="cheese">
-    <one-of>
-      <item>go to cheese</item>
-    </one-of>
-  </rule>
-
   <rule id="cat">
     <one-of>
-      <item>attack cat</item>
+      <item>attack the cat</item>
+      <item>vanquish the cat</item>
     </one-of>
-  </rule>
-
-  <rule id="sleep">
-    <one-of>
-      <item>cast sleep</item>
-    </one-of>
+    <tag>out="attack cat"</tag>
   </rule>
 
   <rule id="stop">
@@ -98,6 +147,24 @@ xmlns="http://www.w3.org/2001/06/grammar">
       <item>stop</item>
     </one-of>
   </rule>
+
+  <!-- Other actions -->
+  <rule id="wizard_interaction">
+    <one-of>
+      <item> cast sleep </item>
+      <item> cast evolve </item>
+    </one-of>
+  </rule>
   
+  <rule id="cheese_interaction">
+    <one-of>
+      <item> take cheese </item>
+      <item> deposit cheese </item>
+    </one-of>
+  </rule>
+  
+  <!-- take the cheese, loot the cheese, steal the cheese -->
+
+
 
 </grammar>

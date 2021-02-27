@@ -49,42 +49,22 @@ public class Player : MonoBehaviour
         }
         else if (collision.tag == "Wizard")
         {
-            InteractWithWizard();
+
         }
         else if (collision.tag == "PickUp")
         {
-            Debug.Log("Looting the chsses.");
-            InteractWithCheese();
+            //Debug.Log("Looting the cheese.");
+            //InteractWithCheese();
         }
         else if (collision.tag == "Home")
         {
-            Debug.Log("Depositing the cheese.");
-            InteractWithHome();
+            //Debug.Log("Depositing the cheese.");
+            //InteractWithHome();
         }
     }
 
-    // == Methods: movement ==
-    private void GoToHome()
-    {
-        Transform home = GameObject.FindGameObjectWithTag("Home").transform;
-        // Enter moveToTarget state
-
-    }
-
-    private void GoToWizard()
-    {
-        Transform wizard = GameObject.FindGameObjectWithTag("Wizard").transform;
-        // Enter moveToTarget state
-    }
-
-    private void GoToCheese()
-    {
-        Transform cheese = GameObject.FindGameObjectWithTag("PickUp").transform;
-        // Enter moveToTarget state
-    }
-
     // == Methods: interaction ==
-    private void InteractWithHome()
+    public void InteractWithHome()
     {
         // If we have cheese, should deposit it
         if (hasCheese && !evolved)
@@ -92,11 +72,11 @@ public class Player : MonoBehaviour
             Incapacitated();
             hasCheese = false;
             cheeseCount++;
-            Debug.Log("Cheese collected: " + cheeseCount);
+            Debug.Log("Depositing the cheese, cheese collected: " + cheeseCount);
         }
     }
 
-    private void InteractWithWizard()
+    public void Evolve()
     {
         // Ask the wizard to put the cat to sleep
         if (cheeseCount >= evolveRequirement)
@@ -104,15 +84,24 @@ public class Player : MonoBehaviour
                 evolved = true;
                 anim.SetInteger("state", 1);
         }
+        else
+        {
+            Debug.Log("You have not collected enough cheese.");
+        }
     }
 
-    private void InteractWithCheese()
+    public void InteractWithCheese()
     {
         // Pick up cheese, if we do not have cheese
         if (!hasCheese && !evolved)
         {
+            Debug.Log("Taking the cheese...");
             Incapacitated();
             hasCheese = true;
+        }
+        else
+        {
+            Debug.Log("Rat cannot has cheese.");
         }
     }
 
