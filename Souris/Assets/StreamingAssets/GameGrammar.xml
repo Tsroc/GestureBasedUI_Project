@@ -22,6 +22,9 @@ xmlns="http://www.w3.org/2001/06/grammar">
       <item>
         <ruleref uri="#cheese_interaction"/>
       </item>
+      <item>
+        <ruleref uri="#gameover_menu"/>
+      </item>
     </one-of>
   </rule>
 
@@ -150,6 +153,13 @@ xmlns="http://www.w3.org/2001/06/grammar">
       <item>deposit cheese</item>
     </one-of>
     <tag>out="drop cheese"</tag>
+  </rule>
+
+  <rule id="gameover_menu">
+    <one-of>
+      <item>Menu</item>
+      <item>Exit</item>
+    </one-of>
   </rule>
 
 </grammar>
