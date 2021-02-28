@@ -25,65 +25,27 @@ xmlns="http://www.w3.org/2001/06/grammar">
     </one-of>
   </rule>
 
-
   <!-- Movement -->
   <rule id="movement">
     <one-of>
-      <item>
-        <ruleref uri="#up"/>
-      </item>
-      <item>
-        <ruleref uri="#down"/>
-      </item>
-      <item>
-        <ruleref uri="#left"/>
-      </item>
-      <item>
-        <ruleref uri="#right"/>
-      </item>
+      <item> go </item>
+      <item> move </item>
     </one-of>
+    <ruleref uri="#directions"/>
+    <tag>out=rules.latest();</tag>
   </rule>
 
-<!-- This needs fixed, similar to set_path methods-->
-  <rule id="up">
+  <rule id="directions">
     <one-of>
       <item>up</item>
-      <item>go up</item>
-      <item>move up</item>
-    </one-of>
-    <tag>out="up"</tag>
-  </rule>
-
-  <rule id="down">
-    <one-of>
       <item>down</item>
-      <item>go down</item>
-      <item>move down</item>
-    </one-of>
-    <tag>out="down"</tag>
-  </rule>
-
-  <rule id="left">
-    <one-of>
       <item>left</item>
-      <item>go left</item>
-      <item>move left</item>
-    </one-of>
-    <tag>out="left"</tag>
-  </rule>
-
-  <rule id="right">
-    <one-of>
       <item>right</item>
-      <item>go right</item>
-      <item>move right</item>
     </one-of>
-    <tag>out="right"</tag>
   </rule>
 
   <!-- Set Path-->
   <rule id="set_path">
-    <tag>out.action="path"</tag>
     <one-of>
       <item> go to </item>
       <item> move to </item>
@@ -101,6 +63,8 @@ xmlns="http://www.w3.org/2001/06/grammar">
     </one-of>
   </rule>
 
+    <!-- Allows to add additional tags for these paths,
+          also allows for the tag to return "Go to X", which is more readable in the code.-->
   <rule id="home">
     <one-of>
       <item>home</item>
@@ -125,12 +89,8 @@ xmlns="http://www.w3.org/2001/06/grammar">
   <!-- Action -->
   <rule id="action">
     <one-of>
-      <item>
-        <ruleref uri="#cat"/>
-      </item>
-      <item>
-        <ruleref uri="#stop"/>
-      </item>
+      <item><ruleref uri="#cat"/></item>
+      <item><ruleref uri="#stop"/></item>
     </one-of>
   </rule>
 
@@ -149,22 +109,47 @@ xmlns="http://www.w3.org/2001/06/grammar">
   </rule>
 
   <!-- Other actions -->
+  <!-- Wizard interactions -->
   <rule id="wizard_interaction">
+    <item>cast</item>
+    <ruleref uri="#wizard_spells"/>
+    <tag>out=rules.latest();</tag>
+  </rule>
+
+  <rule id="wizard_spells">
     <one-of>
-      <item> cast sleep </item>
-      <item> cast evolve </item>
+      <item>sleep</item>
+      <item>evolve</item>
     </one-of>
   </rule>
   
+  <!-- Cheese interactions -->
   <rule id="cheese_interaction">
     <one-of>
-      <item> take cheese </item>
-      <item> deposit cheese </item>
+      <item> 
+        <ruleref uri="#take_cheese"/>
+     </item>
+      <item> 
+        <ruleref uri="#drop_cheese"/>
+     </item>
     </one-of>
   </rule>
-  
-  <!-- take the cheese, loot the cheese, steal the cheese -->
 
+  <rule id="take_cheese">
+    <one-of>
+      <item>take cheese</item>
+      <item>loot cheese</item>
+      <item>steal cheese</item>
+    </one-of>
+    <tag>out="take cheese"</tag>
+  </rule>
 
+  <rule id="drop_cheese">
+    <one-of>
+      <item>drop cheese</item>
+      <item>deposit cheese</item>
+    </one-of>
+    <tag>out="drop cheese"</tag>
+  </rule>
 
 </grammar>

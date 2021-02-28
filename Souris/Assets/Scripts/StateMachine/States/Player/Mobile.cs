@@ -11,9 +11,16 @@ public class Mobile : IState
     GameObject ownerGameObject;
     private float movement;
     private float hClamp, vClamp;
+    // Change to destination...
     private bool hasTarget = false;
-    private System.Action incapacitatedCallback;
     private Vector3 target;
+    private System.Action incapacitatedCallback;
+
+    GameObject wizard;
+    private Vector3 homePosition;
+    private Vector3 cheesePosition;
+    private Vector3 wizardPosition;
+    private Vector3 catPosition;
 
     public Mobile(GameObject ownerGameObject, float movement,
             float vClamp, float hClamp, System.Action incapacitatedCallback)
@@ -28,6 +35,13 @@ public class Mobile : IState
 
     public void Enter()
     {
+        // This is not ideal, Start and Awake methods return wrong positions.
+        wizard =  GameObject.FindGameObjectWithTag("Wizard");
+        homePosition = GameObject.FindGameObjectWithTag("Home").transform.position;
+        cheesePosition = GameObject.FindGameObjectWithTag("PickUp").transform.position;
+        wizardPosition = GameObject.FindGameObjectWithTag("Wizard").transform.position;
+        catPosition = GameObject.FindGameObjectWithTag("Enemy").transform.position;
+
         gr = new GrammarRecognizer(Path.Combine(Application.streamingAssetsPath,
                                                 "GameGrammar.xml"),
                                     ConfidenceLevel.Low);
@@ -39,21 +53,17 @@ public class Mobile : IState
     private void GR_OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
         StringBuilder message = new StringBuilder();
-        // read the semantic meanings from the args passed in.
         SemanticMeaning[] meanings = args.semanticMeanings;
         string keyString;
         string valueString = "";
 
         foreach (SemanticMeaning meaning in meanings)
         {
-
             keyString = meaning.key.Trim();
             valueString = meaning.values[0].Trim();
-
             message.Append("Key: " + keyString + ", Value: " + valueString + " ");
         }
         Debug.Log(message);
-
         DecideAction(valueString);
     }
 
@@ -63,69 +73,50 @@ public class Mobile : IState
         // Movement
         if (arg.ToLower().Equals("up"))
         {
-            target = new Vector3(ownerGameObject.transform.position.x, ownerGameObject.transform.position.y + 10, ownerGameObject.transform.position.z);
-            hasTarget = true;
-            Debug.Log("Home");
+            // Try to make this more readable...
+            SetDestination(ownerGameObject.transform.position + new Vector3(0, 10, 0)); 
         }
         else if (arg.ToLower().Equals("down"))
         {
-            target = new Vector3(ownerGameObject.transform.position.x, ownerGameObject.transform.position.y - 10, ownerGameObject.transform.position.z);
-            hasTarget = true;
-            Debug.Log("Down");
+            SetDestination(ownerGameObject.transform.position + new Vector3(0, -10, 0)); 
         }
         else if (arg.ToLower().Equals("left"))
         {
-            target = new Vector3(ownerGameObject.transform.position.x - 20, ownerGameObject.transform.position.y, ownerGameObject.transform.position.z);
-            hasTarget = true;
-            Debug.Log("Left");
+            SetDestination(ownerGameObject.transform.position + new Vector3(-20, 0, 0)); 
         }
         else if (arg.ToLower().Equals("right"))
         {
-            target = new Vector3(ownerGameObject.transform.position.x + 20, ownerGameObject.transform.position.y, ownerGameObject.transform.position.z);
-            hasTarget = true;
-            Debug.Log("Right");
+            SetDestination(ownerGameObject.transform.position + new Vector3(20, 0, 0)); 
         }
         // Path
         else if (arg.ToLower().Equals("go to home"))
         {
-            target = GameObject.FindGameObjectWithTag("Home").transform.position;
-
-            hasTarget = true;
-            Debug.Log("Home");
+            SetDestination(homePosition);
         }
         else if (arg.ToLower().Equals("go to wizard"))
         {
-            target = GameObject.FindGameObjectWithTag("Wizard").transform.position;
-
-            hasTarget = true;
-            Debug.Log("Wizard");
+            SetDestination(wizardPosition);
         }
         else if (arg.ToLower().Equals("go to cheese"))
         {
-            target = GameObject.FindGameObjectWithTag("PickUp").transform.position;
-
-            hasTarget = true;
-            Debug.Log("Cheese");
+            SetDestination(cheesePosition);
         }
         // Action
         else if (arg.ToLower().Equals("attack cat"))
         {
-            target = GameObject.FindGameObjectWithTag("Enemy").transform.position;
-
-            hasTarget = true;
-            Debug.Log("Cat");
+            SetDestination(catPosition);
         }
         else if (arg.ToLower().Equals("stop"))
         {
             ClearTarget();
             Debug.Log("Stop");
         }
-        else if (arg.ToLower().Equals("cast sleep"))
+        else if (arg.ToLower().Equals("sleep"))
         {
             // if close - interact
             if (this.GetDistance("Wizard") < 2)
             {
-                GameObject.FindGameObjectWithTag("Wizard").GetComponent<Wizard>().CastSleep(); ;
+                wizard.GetComponent<Wizard>().CastSleep(); ;
             }
             else
             {
@@ -133,7 +124,7 @@ public class Mobile : IState
             }
 
         }
-        else if (arg.ToLower().Equals("cast evolve"))
+        else if (arg.ToLower().Equals("evolve"))
         {
             // if close - interact
             if (this.GetDistance("Wizard") < 2)
@@ -158,7 +149,7 @@ public class Mobile : IState
                 Debug.Log("Out of range.");
             }
         }
-        else if (arg.ToLower().Equals("deposit cheese"))
+        else if (arg.ToLower().Equals("drop cheese"))
         {
             if (this.GetDistance("Home") < 2)
             {
@@ -216,13 +207,17 @@ public class Mobile : IState
 
     private void ClearTarget()
     {
-        hasTarget = false;
-        //target = null;
+        this.hasTarget = false;
+    }
+
+    private void SetDestination(Vector3 destination)
+    {
+        this.target = destination; 
+        this.hasTarget = true;
     }
     
     private float GetDistance(string t)
     {
-
         // Check distance from wizard,
         GameObject target  = GameObject.FindGameObjectWithTag(t);
         float distance = Vector3.Distance(ownerGameObject.transform.position,
@@ -234,14 +229,13 @@ public class Mobile : IState
 
     public void Exit()
     {
-
         if (gr != null && gr.IsRunning)
         {
             gr.OnPhraseRecognized -= GR_OnPhraseRecognized;
             gr.Stop();
         }
-
     }
+
     private void MoveUp()
     {
         ownerGameObject.transform.Translate(0, this.movement * Time.deltaTime, 0);
@@ -299,3 +293,4 @@ public class Mobile : IState
         ownerGameObject.transform.position = clampedPosition;
     }
 }
+
