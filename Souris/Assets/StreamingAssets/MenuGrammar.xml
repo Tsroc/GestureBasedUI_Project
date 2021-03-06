@@ -4,6 +4,7 @@
 tag-format="semantics/1.0" version="1.0"
 xmlns="http://www.w3.org/2001/06/grammar">
 
+  <!-- Grammer loaded when the game is launched. -->
   <rule id="mainmenu">
     <one-of>
       <item>
@@ -17,24 +18,20 @@ xmlns="http://www.w3.org/2001/06/grammar">
 
   <rule id="play">
     <one-of>
-      <item>play</item>
-      <!--
-      <item>start</item>
-      <item>begin</item>
-      -->
+      <item>play game</item>
+      <item>start game</item>
+      <item>begin game</item>
     </one-of>
+    <tag>out="play"</tag>
   </rule>
 
   <rule id="quit">
     <one-of>
-      <item>quit</item>
-      <!--
-      <item>end</item>
-      <item>exit</item>
-      -->
+      <item>quit game</item>
+      <item>end game</item>
+      <item>exit game</item>
     </one-of>
+    <tag>out="play"</tag>
   </rule>
-
-
 
 </grammar>
