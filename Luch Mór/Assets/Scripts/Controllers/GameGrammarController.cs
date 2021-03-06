@@ -89,6 +89,7 @@ public class GameGrammarController : MonoBehaviour
             gm.ClearDestination();
             Debug.Log("Stop");
         }
+        // Wizard interaction
         else if (arg.ToLower().Equals("sleep"))
         {
             // if close - interact
@@ -114,6 +115,7 @@ public class GameGrammarController : MonoBehaviour
                 Debug.Log("Out of range.");
             }
         }
+        // Cheese interaction
         else if (arg.ToLower().Equals("take cheese"))
         {
             if (gm.GetDistance("cheese") < 2)
@@ -137,6 +139,7 @@ public class GameGrammarController : MonoBehaviour
                 Debug.Log("Out of range.");
             }
         }
+        // Gameover menu
         else if (arg.ToLower().Equals("menu"))
         {
             if (!gm.Gameover())

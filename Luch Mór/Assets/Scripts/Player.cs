@@ -68,6 +68,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /*
+     * Used for up, down, left , right. The destination will be set in that direction just beyond map limits to ensure the player moves to the edge.
+     */
     public void SetDestination(string direction)
     {
         switch (direction)
@@ -89,6 +92,9 @@ public class Player : MonoBehaviour
         this.hasDestination = true;
     }
 
+    /*
+     * Sets destination to a Vector3 location.
+     */
     public void SetDestination(Vector3 destination)
     {
         this.destination = destination;
@@ -100,6 +106,9 @@ public class Player : MonoBehaviour
         this.hasDestination = false;
     }
 
+    /*
+     * === Keyboard movement: start ===
+     */
     private void MoveUp()
     {
         gameObject.transform.Translate(0, this.movement * Time.deltaTime, 0);
@@ -125,6 +134,9 @@ public class Player : MonoBehaviour
         gameObject.transform.Translate(-this.movement * Time.deltaTime, 0, 0);
         ClampMovement();
     }
+    /*
+     * === Keyboard movement: end ===
+     */
 
     private void RotateLeft()
     {
@@ -139,7 +151,7 @@ public class Player : MonoBehaviour
     private void ClampMovement()
     {
         Vector3 clampedPosition = gameObject.transform.position;
-        clampedPosition.y = Mathf.Clamp(clampedPosition.y, -vClamp, vClamp-1);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, -vClamp, vClamp - 1);
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, -hClamp, hClamp);
         gameObject.transform.position = clampedPosition;
     }
@@ -220,8 +232,8 @@ public class Player : MonoBehaviour
         // Ask the wizard to put the cat to sleep
         if (cheeseCount >= evolveRequirement)
         {
-                evolved = true;
-                anim.SetInteger("state", 1);
+            evolved = true;
+            anim.SetInteger("state", 1);
         }
         else
         {

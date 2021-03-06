@@ -58,7 +58,6 @@ public class Cat : MonoBehaviour
         // Game over
         gameover = true;
         anim.SetInteger("state", 3);
-        //this.stateMachine.ChangeState(new Attacking());
     }
 
     public void Scared()
@@ -66,7 +65,6 @@ public class Cat : MonoBehaviour
         // Game over
         gameover = true;
         anim.SetInteger("state", 4);
-        //this.stateMachine.ChangeState(new Attacking());
     }
 
 

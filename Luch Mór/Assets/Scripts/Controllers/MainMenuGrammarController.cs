@@ -46,11 +46,11 @@ public class MainMenuGrammarController: MonoBehaviour
         // use a string builder to create the string and out put to the user
         Debug.Log(message);
 
-        TempMethod(valueString);
+        DecideAction(valueString);
 
     }
 
-    private void TempMethod(string arg)
+    private void DecideAction(string arg)
     {
         if (arg.ToLower().Equals("play"))
         {
